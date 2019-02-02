@@ -1,0 +1,10 @@
+{% load staticfiles %}
+<div class="uchome-info">
+    <div class="uchome-info-uimg">
+        <img src="{{ user.user_img }}" />
+    </div>
+    <div class="uchome-info-uinfo">
+        <p>{{ user.username }}, 欢迎光临！[<a id="logout" class="white">退出登陆</a>]</p>
+{#        <p>帐号：{{ account }}</p>#}
+    </div>
+</div>

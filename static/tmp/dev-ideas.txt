@@ -1,0 +1,117 @@
+================= 移动商城开发
+models:
+轮滑： 4 张图片
+Roller:
+id
+img
+name
+
+首页：
+推荐的内容：
+根据分类进行推荐
+
+大分类：
+category :
+id
+cg_name
+create_date
+rem_order -- 推荐的 顺序， order 值越大，越前面
+
+
+小分类：
+sub_category
+id
+cg_name
+category
+create_date
+
+user
+id
+username
+email
+password
+token
+create_date
+chinese_name
+phone_num
+
+
+product
+prod_id
+prod_name
+prod_img -- 主要显示的 img
+prod_img2 -- 用于详情页轮播的img
+prod_img3 -- 用于详情页轮播的img
+prod_img4 -- 用于详情页轮播的img
+prod_desc  - 描述
+prod_price  - 单价
+prod_num - 库存
+prod_brand -- 品牌
+
+is_delete - boolean - 是否已删除
+
+cart
+id
+user
+order -- default - 0
+prod_id
+prod_num -- 已加入购物车数量
+create_date
+is_delete -- boolean
+
+
+order
+id
+user
+create_date
+address
+pay_type
+is_pay  -- 1 支付宝 2 微信
+is_delete
+
+
+地址表
+address
+id
+receive_name
+receive_phone
+address
+create_date
+update_date
+
+
+产品收藏表
+prod_collect
+id
+product
+user
+create_date
+
+
+评论表：
+comment:
+id
+product 产品
+user -- 评论用户
+create_date -- 评论时间
+content -- 评论内容
+
+-- 用于做数据分析
+销量表
+id
+product -- 产品
+month -- 月份
+mon_sales -- 月销量
+qua_sales -- 季度销量
+year_sales -- 年销量
+total_sales -- 总销量
+
+
+
+
+
+
+
+
+
+

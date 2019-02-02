@@ -1,0 +1,39 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <script src="{% static "shop/mine/js/login.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/login.css" %}" />
+{% endblock css_js_section %}
+{% block top-left-icon %}
+    {% include "shop/function/return_back.html" %}
+{% endblock top-left-icon %}
+{% block top-right-icon %}
+    {% include "shop/function/top-right-home-icon.html" %}
+{% endblock top-right-icon %}
+{% block base_content %}
+{#        首页对应的内容#}
+    <div class="cart-panel">
+		<form class="am-form" action="/login/" method="post">
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-user" style="color:#329cd9"></i>
+                <input type="text" class="am-form-field  my-radius" name="username" id="lgusername" placeholder="请输入您的用户名">
+            </div>
+            <p class="loginvalidate" id="lgnamenull"><span>账户为空</span></p>
+
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-lock" style="color:#329cd9"></i>
+                <input type="password" class="am-form-field  my-radius" name="password" id="lgpassword" placeholder="请输入您的密码">
+            </div>
+            <p class="loginvalidate" id="lgpswnull"><span>请输入密码</span></p>
+            <p class="loginvalidate" id="lgpswerror"><span>密码或账户错误</span></p>
+{#            <div class="am-checkbox">#}
+{#              <label>#}
+{#                <input type="checkbox"> 记住密码#}
+{#              </label>#}
+{#            </div>#}
+            <p class="am-text-center"><a id="loginbtn" class="am-btn am-btn-danger am-radius am-btn-block">立即登录</a></p>
+            <p class="am-text-center"><a href="/register/" class="am-btn am-btn-danger am-radius am-btn-block">注册</a></p>
+        </form>
+    </div>
+    
+{% endblock base_content %}

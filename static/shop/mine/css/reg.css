@@ -1,0 +1,22 @@
+.regvalidate{
+    color:red;
+    display:none;
+}
+
+.usrimgupload{
+    position:relative;
+    display: inline-block;
+}
+
+.usrimgupload input{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+}
+
+.uploadusrimg{
+    color:#4bad4b;
+    margin-top: 0;
+}

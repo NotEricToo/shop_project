@@ -1,0 +1,10 @@
+#base_header{
+    z-index:10;
+	position:fixed;
+    top:0;
+	left:0;
+    height: 5rem;
+}
+#base_content_id{
+    margin-top: 5rem;
+}

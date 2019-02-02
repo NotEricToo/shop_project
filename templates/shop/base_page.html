@@ -1,0 +1,81 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+
+    {#清除缓存#}
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="{% static 'shop/amazeui/css/amazeui.min.css' %}"/>
+    <link rel="stylesheet" href="{% static  'shop/default/style.css' %}"/>
+    <link rel="stylesheet" href="{% static  'shop/home/css/base_page.css' %}"/>
+    <script src="{% static 'shop/amazeui/js/jquery.min.js' %}"></script>
+    <script src="{% static 'shop/amazeui/js/amazeui.min.js' %}"></script>
+    <script src="{% static 'shop/home/js/base_page.js' %}"></script>
+    {% block css_js_section %}
+
+    {% endblock css_js_section %}
+
+</head>
+
+<body>
+<div class="container">
+	<header data-am-widget="header" class="am-header am-header-default my-header" id="base_header">
+    {% block top-left-icon %}
+        {% include "shop/function/return_back.html" %}
+    {% endblock top-left-icon %}
+      <h1 class="am-header-title">
+        <a href="#title-link" class="">{{ title }}</a>
+      </h1>
+    {% block top-right-icon %}
+        {% include "shop/function/top-right-share-icon.html" %}
+    {% endblock top-right-icon %}
+    </header>
+    <!-- banner -->
+    <div id="base_content_id">
+    {% block base_content %}
+{#        首页对应的内容#}
+    {% endblock %}
+    </div>
+    <!--底部-->
+    <div data-am-widget="navbar" class="am-navbar am-cf my-nav-footer " id="">
+      <ul class="am-navbar-nav am-cf am-avg-sm-4 my-footer-ul">
+        <li>
+          <a href="{% url 'home' %}" class="">
+            <span class="am-icon-home"></span>
+            <span class="am-navbar-label">首页</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'category' %}" class="">
+            <span class=" am-icon-reorder"></span>
+            <span class="am-navbar-label">分类</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'cart' %}" class="">
+            <span class=" am-icon-shopping-cart"></span>
+            <span class="am-navbar-label">购物车</span>
+          </a>
+        </li>
+        <li style="position:relative">
+          <a href="{% url 'mine' %}" class="">
+            <span class="am-icon-user"></span>
+            <span class="am-navbar-label">我的</span>
+          </a>
+        </li>
+      </ul>
+
+    </div>
+</div>
+</body>
+</html>

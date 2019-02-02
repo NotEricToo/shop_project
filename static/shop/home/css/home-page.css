@@ -1,0 +1,19 @@
+.homepage-rec{
+    height: 10rem;
+    width: 100%;
+}
+
+.homepage-prod{
+    float: left;
+    display: flex;
+}
+
+.am-panel-bd{
+    width: 17rem;
+    height: 18rem;
+    float:left;
+}
+.am-img-responsive{
+    width: 16rem;
+    height: 12rem;
+}

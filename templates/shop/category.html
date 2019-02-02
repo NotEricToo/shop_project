@@ -1,0 +1,66 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <link rel="stylesheet" href="{% static  'shop/catetory/css/category.css' %}"/>
+    <script src="{% static  'shop/catetory/js/category.js' %}" type="text/javascript"></script>
+{% endblock css_js_section %}
+{% load staticfiles %}
+
+       {% block top-left-icon %}
+          {% include "shop/function/return_back.html" %}
+       {% endblock %}
+
+
+{% block base_content %}
+{#        首页对应的内容#}
+<script type="text/javascript">
+
+
+</script>
+    <div class="gray-panel">
+    	<div class="my-search-title-panel">
+        	<div class="am-input-group">
+              <input type="text" class="am-form-field am-radius" id="cg_searchid">
+              <span class="am-input-group-btn">
+                <button class="am-btn am-radius" type="button" id="cg_searchbtn"><span class="am-icon-search"></span></button>
+              </span>
+            </div>
+        </div>
+    </div>
+    <section data-am-widget="accordion" class="am-accordion am-accordion-gapped"
+data-am-accordion='{"multiple": true}'>
+    <aside>
+        {% for cg in cglist %}
+          <dl class="am-accordion-item">
+            <dt class="am-accordion-title">{{ cg.cg_name }}</dt>
+            <dd class="am-accordion-bd am-collapse">
+              <!-- 规避 Collapase 处理有 padding 的折叠内容计算计算有误问题， 加一个容器 -->
+
+                      <div class="am-accordion-content">
+                        {% for sub in cg.sub_category_set.all %}
+
+                        <dl class="my-category-dl">
+                            <dt><a class="red2 am-cf getid" id="{{ sub.id }}" ga="{{ sub.id }}">{{ sub.cg_name }}</a></dt>
+                        </dl>
+
+                        {% endfor %}
+                      </div>
+
+            </dd>
+          </dl>
+        {% endfor %}
+
+    </aside>
+    <div class="cg-right-div" id="cg-prodlist">
+        {# 把分类页面的 产品列表 include 进来 #}
+    	 {% include "shop/function/category_listprod.html" %}
+    </div>
+</section>
+
+<div data-am-widget="gotop" class="am-gotop am-gotop-fixed">
+  <a href="#top" title="">
+    <img class="am-gotop-icon-custom" src="../../static/shop/default/goTop.gif" />
+  </a>
+</div>
+
+{% endblock %}

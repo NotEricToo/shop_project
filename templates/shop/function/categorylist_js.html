@@ -1,0 +1,100 @@
+<script type="text/javascript">
+ //=================================================
+ var total_good = document.getElementById("total_good")
+    var total_amount = document.getElementById("total_amount")
+    function updateTotalInfo(totalNum,totalPrice){
+        if(total_good){
+            total_good.innerHTML = totalNum
+        }
+        if(total_amount){
+            total_amount.innerHTML = totalPrice
+        }
+    }
+    // 循环产品列表，取到每个产品的id
+$(document).ready(function () {
+
+
+    // 点击 减少 按钮：
+    var prods = document.getElementsByClassName("getgaidbysub")
+    for(var j = 0 ; j < prods.length ; j++){
+        prod = prods[j]
+
+        prod.addEventListener("click",function () {
+            gavalue = this.getAttribute("ga")
+            // 参数传递 0 ， 表示 减少1
+            $.get("/updateToCart/0/",{"prodid":gavalue},function(data){
+                if(data.status=="success"){
+                    // 成功， update 分类页面上的产品数字
+                    var num = data.num
+                    var numspan = document.getElementById("cgnumbtn" + gavalue)
+                    numspan.innerHTML = num
+
+                    if(num=="0"){
+                        {#alert("删除元素")#}
+                        var cartli = document.getElementById("cartlist"+gavalue)
+                        if(cartli){
+                            cartli.parentNode.removeChild(cartli)
+                        }
+                    }
+
+                    // 更新总数和价格
+                    updateTotalInfo(data.totalnum,data.totalprice)
+                }
+
+                // 未登录处理
+                if(data.status == "nologin"){
+                    window.location.href="/login/"
+                }
+
+
+            })
+        })
+    }
+
+    // 点击 添加 按钮： getgaidbyadd
+    var prods = document.getElementsByClassName("getgaidbyadd")
+    for(var j = 0 ; j < prods.length ; j++){
+        prod = prods[j]
+        $prod = $(prod)
+
+        $prod.on("click",function () {
+            gavalue = this.getAttribute("ga")
+            $.get("/updateToCart/1/",{"prodid":gavalue},function(data){
+                if(data.status=="success"){
+                    // 成功， update 分类页面上的产品数字
+                    var num = data.num
+                    var numspan = document.getElementById("cgnumbtn" + gavalue)
+                    numspan.innerHTML = num
+
+                    // 更新总数和价格
+                    updateTotalInfo(data.totalnum,data.totalprice)
+                }
+
+                // 未登录处理
+                if(data.status == "nologin"){
+                    window.location.href="/login/"
+                }
+                // 没有库存了
+                if(data.status =="maxnum"){
+                    alert("没有库存了！")
+                }
+            })
+        })
+
+    }
+
+    // 点击 产品 图片 getgaidbyimg
+    var prods = document.getElementsByClassName("getgaidbyimg")
+    for(var j = 0 ; j < prods.length ; j++){
+        prod = prods[j]
+
+        prod.addEventListener("click",function () {
+            gavalue = this.getAttribute("ga")
+
+
+        })
+    }
+})
+
+
+</script>

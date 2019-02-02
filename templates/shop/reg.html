@@ -1,0 +1,68 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <script src="{% static "shop/mine/js/reg.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/reg.css" %}" />
+{% endblock css_js_section %}
+{% block top-left-icon %}
+    {% include "shop/function/return_back.html" %}
+{% endblock top-left-icon %}
+{% block top-right-icon %}
+    {% include "shop/function/top-right-home-icon.html" %}
+{% endblock top-right-icon %}
+{% block base_content %}
+{#        首页对应的内容#}
+<script type="text/javascript">
+
+
+</script>
+    <div class="cart-panel">
+		<form class="am-form" id="regform" method="post" enctype="multipart/form-data" action="{% url "register" %}">
+            {% csrf_token %}
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-user" style="color:#329cd9"></i>
+                <input type="text" class="am-form-field  my-radius" id="username" name="username" placeholder="请输入您的用户名">
+
+            </div>
+            <p class="regvalidate" id="unamenull"><span>账户不能为空</span></p>
+            <p class="regvalidate" id="unameexists"><span>账户已存在</span></p>
+            <p class="regvalidate" id="unamelength"><span>账户长度需要 6-20 之间</span></p>
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-lock" style="color:#329cd9"></i>
+                <input type="password" class="am-form-field  my-radius" id="password" name="password" placeholder="请输入您的密码">
+            </div>
+            <p class="regvalidate" id="paswnull"><span>密码不能为空</span></p>
+            <p class="regvalidate" id="pswlength"><span>密码长度需要 6-20 之间</span></p>
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-lock" style="color:#e9c740"></i>
+                <input type="password" class="am-form-field  my-radius" id="password2" name="password2" placeholder="请重复输入一次密码">
+            </div>
+            <p class="regvalidate" id="paswalign"><span>两次密码不一致</span></p>
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-envelope" style="color:#78c3ca"></i>
+                <input type="text" class="am-form-field  my-radius" id="email" name="email" placeholder="请输入邮箱号码">
+            </div>
+            <p class="regvalidate" id="emailformat"><span>邮箱格式不正确</span></p>
+            <p class="regvalidate" id="emailnull"><span>邮箱不能为空</span></p>
+            <div class="am-form-group am-form-icon">
+                <i class="am-icon-phone" style="color:#f09513"></i>
+                <input type="text" class="am-form-field  my-radius" id="phonenumber" name="phonenumber" placeholder="请输入联系电话">
+            </div>
+            <p class="regvalidate" id="phonenull"><span>联系电话为空</span></p>
+            <div class="am-form-group am-form-icon usrimgupload am-form-field am-btn am-btn-success ">
+{#                <i class="am-icon-image" style="color:#f09513;"></i>#}
+                <span>上传头像</span>
+                <input type="file" class="" id="userimg" name="userimg" title="头像" alt="浏览器不支持头像上传">
+            </div>
+            <p class="uploadusrimg " id="usrimgp"><span>未上传头像(只支持.jpg .png文件)</span></p>
+            <div class="am-checkbox">
+              <label>
+                <input type="checkbox" name="agreebox" id="agreebox"> 我已阅读并同意<a href="#">《协议》</a>
+              </label>
+            </div>
+
+            <p class="regvalidate" id="checkagree"><span>尚未同意协议</span></p>
+            <p class="am-text-center"><a type="" class="am-btn am-btn-danger am-radius am-btn-block" id="regbutton">立即注册</a></p>
+        </form>
+    </div>
+{% endblock %}

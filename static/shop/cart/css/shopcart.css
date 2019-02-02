@@ -1,0 +1,41 @@
+li{
+    list-style: none;
+}
+
+ul{
+    list-style: none;
+}
+
+
+
+.cg-list-icon{
+    /*font-size:medium;*/
+    /*margin-left: 3rem;*/
+    /*float:left;*/
+    /*display:inline;*/
+    display:inline-block;
+    float:left;
+    height:2.4rem;
+    /*border-right:solid 1px #ededed;*/
+    line-height:2.4rem;
+    padding:0 5px 0px 0px;
+    margin-top:0.5rem;
+    margin-bottom:1rem;
+    margin-left:1rem;
+    font-size:1.3rem;
+    text-align: center;
+    background-color: white;
+    border: 0;
+}
+
+.wordpanel{
+    margin-bottom: 3rem;
+}
+
+.pnum-color{
+    color:#bd2130;
+}
+
+.am-fr{
+    margin-left:3rem;
+}
