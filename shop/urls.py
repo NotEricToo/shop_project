@@ -32,4 +32,6 @@ urlpatterns = [
     path('login/', views.loginpage,name="login"), # 登陆
     path('updateToCart/<int:act>/', views.updateToCart,name="updateToCart"), # 更新购物车ajax
     path('cgsearch/', views.get_cglist_by_search,name="cgsearch"), # 根据搜索框获取分类页面
+    path('checkout/', views.checkoutorder,name="checkout"), # 提交订单
+    path('addressdetail/', views.addAddress,name="addressdetail"), # 详细地址
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

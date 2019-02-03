@@ -269,5 +269,24 @@ def updateToCart(request,act):
     return JsonResponse(dict)
 
 
+# 地址添加页面
+def addAddress(request):
+    title="收货地址"
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
+
+
+    except User.DoesNotExist as e:
+        return render(request,"shop/login.html",{"title":"请登陆"})
+    return render(request,"shop/addressInfoDetail.html",locals())
+
+# 提交订单页面
+def checkoutorder(request):
+    title = "提交订单"
+    return render(request,"shop/checkout.html",locals())
+
+
+
 
 

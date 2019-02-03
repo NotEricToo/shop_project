@@ -1,0 +1,41 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <script src="{% static "shop/mine/js/address.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/address.css" %}" />
+{% endblock css_js_section %}
+{% block top-left-icon %}
+    {% include "shop/function/return_back.html" %}
+{% endblock top-left-icon %}
+{% block top-right-icon %}
+    {% include "shop/function/top-right-home-icon.html" %}
+{% endblock top-right-icon %}
+{% block base_content %}
+{#        首页对应的内容#}
+    <div class="paoduct-title-panel">
+        <h2 class="checkout-h2"><span class="am-badge am-round am-badge-warning "></span> 收货地址</h2>
+
+        <form class="am-form am-form-inline">
+        <div class="am-form-group">
+            <input type="textarea" class="am-form-field am-radius" placeholder="地址命名，如：家里/公司">
+        </div>
+        <hr data-am-widget="divider" style="" class="am-divider-default am-margin-bottom-sm"/>
+        <div class="am-form-group">
+            <input type="textarea" class="am-form-field am-radius" placeholder="详细地址">
+        </div>
+        <hr data-am-widget="divider" style="" class="am-divider-default am-margin-bottom-sm"/>
+
+        <div class="am-form-group am-form-icon">
+            <i class="am-icon-user"></i>
+            <input type="text" class="am-form-field am-radius" placeholder="收货姓名">
+        </div>
+        <div class="am-form-group am-form-icon">
+            <i class="am-icon-phone"></i>
+            <input type="text" class="am-form-field am-radius" placeholder="手机号码">
+        </div>
+
+        <p class="am-text-center"><a id="confirmbtn" class="am-btn am-btn-danger am-radius am-btn-block">确定</a></p>
+        </form>
+    </div>
+    
+{% endblock base_content %}

@@ -180,6 +180,8 @@ update_date
 
 class Address(models.Model ):
     id = models.AutoField(primary_key=True)
+    addressname = models.CharField(max_length=20,null=True,blank=True,verbose_name="地址名称")
+    user = models.ForeignKey(User,on_delete=False,blank=True,null=True,verbose_name="用户")
     receive_name = models.CharField(max_length=20,null=False,blank=False,verbose_name="收货人名字")
     receive_phone = models.CharField(max_length=20,null=False,blank=False,verbose_name="收货人电话")
     address = models.TextField(max_length=200,null=False,blank=False,verbose_name="收货地址")
