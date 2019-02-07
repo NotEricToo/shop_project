@@ -26,6 +26,11 @@ $(document).ready(function(){
     
     cg_searchbtn.addEventListener("click",function () {
         var searchText = cg_searchid.value
+
+        if(searchText.replace("/\s+/g","")==""){
+            alert("搜索条件不能为空!!")
+            return false
+        }
         $.get("/cglist/",{"searchText":searchText,"type":1},function (data) {
             if(data.length>0){
                 $("#cg-prodlist").html(data)

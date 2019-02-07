@@ -1,0 +1,23 @@
+<ul>
+    <li><h3 id="adshead">{{ address.addressname }}</h3></li>
+    <li><p>地址详情：{{ address.address | slice:"20" }}</p></li>
+    <li><p>收货人：{{ address.receive_name }}</p></li>
+    <li><p>收货人手机：{{ address.receive_phone }}</p></li>
+    <li>
+        <div class="adsbtncls">
+             <a id="clickupdateaddress" ga="{{ address.id }}" class="am-badge am-badge-danger am-round" href="javascript:updateadspage()">修改</a>
+        </div>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    function updateadspage(){
+        var updbtninco = document.getElementById("clickupdateaddress")  // 获取更新按钮
+
+        updbtninco.addEventListener("click",function () {
+
+            var gv = this.getAttribute("ga")
+            window.location.href="/updateAddress/"+gv+"/"
+        })
+    }
+</script>

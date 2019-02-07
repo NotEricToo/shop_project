@@ -1,0 +1,56 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <script src="{% static "shop/mine/js/mine.js" %}"></script>
+    <script src="{% static "shop/mine/js/addresslist.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/mine.css" %}" />
+
+{% endblock css_js_section %}
+
+{% block top-left-icon %}
+   {% include "shop/function/return_back.html" %}
+{% endblock %}
+
+{% block base_content %}
+    {% include "shop/function/userinfo.html" %}
+
+    <div class="my-nav-bar">
+    	<ol class="am-breadcrumb">
+          <li><a>收货地址列表</a></li>
+        </ol>
+    </div>
+    <div class="cart-tool">
+
+        <a class="am-btn am-btn-sm am-btn-warning" href="{% url 'addressdetail' %}">
+          <i class="am-icon-location-arrow"></i>
+          添加地址
+        </a>
+    </div>
+    <div class="am-cf cart-panel">
+    	<div class="cart-list-panel">
+            <ul class="am-avg-sm-1 cart-panel-ul">
+                {% for address in addresslist %}
+                <li id="adsli{{ address.id }}" ga="{{ address.id }}" class="adslistli">
+                	<div class="adslistdiv infopanel wordpanel ">
+                        <ul>
+                            <li><h3>{{ address.addressname }}</h3></li>
+                            <li><p>地址详情：{{ address.address | slice:"20" }}</p></li>
+                            <li><p>收货人：{{ address.receive_name }}</p></li>
+                            <li><p>收货人手机：{{ address.receive_phone }}</p></li>
+                            <li>
+                                <div class="adsbtncls">
+                                     <a id="updtadsbtn{{ address.id }}" ga="{{ address.id }}" class="am-badge am-badge-danger am-round updtadsbtn">修改</a>
+                                     <a id="deladsbtn{{ address.id }}" ga="{{ address.id }}" class="am-badge am-badge-danger am-round deladsbtn">删除</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+
+{% endblock base_content %}

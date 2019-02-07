@@ -178,7 +178,7 @@ create_date
 update_date
 '''
 
-class Address(models.Model ):
+class UserAddress(models.Model):
     id = models.AutoField(primary_key=True)
     addressname = models.CharField(max_length=20,null=True,blank=True,verbose_name="地址名称")
     user = models.ForeignKey(User,on_delete=False,blank=True,null=True,verbose_name="用户")
@@ -207,7 +207,7 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User,on_delete=False,verbose_name="用户")
     create_date = models.DateField(default=datetime.datetime.now)
-    address = models.ForeignKey(Address,on_delete=False,verbose_name="收货信息")
+    address = models.ForeignKey(UserAddress,on_delete=False,verbose_name="收货信息")
     pay_type = models.CharField(max_length=20,null=True,blank=True,verbose_name="支付方式")
     is_pay = models.BooleanField(default=False,verbose_name="是否已支付")
     is_delete = models.BooleanField(default=False,verbose_name="已删除")

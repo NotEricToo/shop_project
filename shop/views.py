@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.shortcuts import render,HttpResponse,redirect,render_to_response
 from django.http import JsonResponse
-from shop.models import Recommend,Product,Category,User,Cart
+from shop.models import Recommend,Product,Category,User,Cart,UserAddress
 from django.contrib.auth.hashers import make_password
 import uuid,os
 from django.contrib.auth.hashers import check_password
@@ -115,10 +115,10 @@ def mine(request):
     token = request.session.get("token")
     try:
         user = User.objects.get( token = token )
-        return render(request,"shop/user.html",locals())
+
     except User.DoesNotExist as e:
         return loginpage(request)
-        # return render(request, "shop/login.html", locals())
+    return render(request, "shop/user.html", locals())
 
 # 用户注册
 def register(request):
@@ -275,8 +275,30 @@ def addAddress(request):
     token = request.session.get("token")
     try:
         user = User.objects.get(token=token)
+        if request.method == "POST" :
+            addressid = request.POST.get("addressid")
+            adsname = request.POST.get("adsname")
+            adsdetail = request.POST.get("adsdetail")
+            adsrecname = request.POST.get("adsrecname")
+            adsmphone = request.POST.get("adsmphone")
+            try:
+                # 如果存在该 address ， 就更新
+                useraddress = UserAddress.objects.get(id=addressid)
 
+                useraddress.addressname = adsname
+                useraddress.address = adsdetail
+                useraddress.receive_name = adsrecname
+                useraddress.receive_phone = adsmphone
+                useraddress.save()
 
+            except UserAddress.DoesNotExist as e:
+                # 不存在， 就新加
+                address = UserAddress(addressname=adsname, user=user, receive_name=adsrecname,
+                                      receive_phone=adsmphone,
+                                      address=adsdetail)
+                address.save()
+            finally:
+                return redirect(reverse("addresslist"))
     except User.DoesNotExist as e:
         return render(request,"shop/login.html",{"title":"请登陆"})
     return render(request,"shop/addressInfoDetail.html",locals())
@@ -284,9 +306,77 @@ def addAddress(request):
 # 提交订单页面
 def checkoutorder(request):
     title = "提交订单"
-    return render(request,"shop/checkout.html",locals())
+    token = request.session.get("token")
+    total_price = 0
+    try:
+        user = User.objects.get(token=token)
+        addresslist = UserAddress.objects.filter(user=user)
+        cartlist = Cart.objects.filter(user=user, is_delete=False)
+        for item in cartlist:
+            total_price += item.prod_num*item.product.prod_price
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+    return render(request, "shop/checkout.html", locals())
 
 
+# 我的详细信息
+def mydetailinfo(request):
+    title="我的详细信息"
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
 
 
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+    return render(request,"shop/mydetailinfo.html",locals())
 
+# 地址列表页面：
+def address_list(request):
+    title = "地址列表"
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
+        addresslist = UserAddress.objects.filter(user=user)
+
+
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+    return render(request, "shop/address_list.html", locals())
+
+
+# 地址更新页面
+def updateAddress(request,adsid):
+    title = "地址更新"
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
+        try:
+            address = UserAddress.objects.get(id=adsid)
+            return render(request,"shop/addressInfoDetail.html",locals())
+        except UserAddress :
+            pass
+            # return 404 not found
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+
+# 删除地址
+def deleteAddress(request):
+    adsid = request.GET.get("adsid")
+    dict={}
+    try:
+        address = UserAddress.objects.get(id=adsid)
+        address.delete()
+        dict["status"]="success"
+    except UserAddress.DoesNotExist :
+        dict["status"] = "error"
+    return JsonResponse(dict)
+
+# ajax 更新 co 的地址
+def updatecoaddress(request):
+    adsid = request.GET.get("adsid")
+    try:
+        address = UserAddress.objects.get(id=adsid)
+        return render(request,"shop/function/checkout-address.html",locals())
+    except UserAddress.DoesNotExist :
+        pass

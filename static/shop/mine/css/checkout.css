@@ -1,0 +1,17 @@
+.adsselect{
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.co-adsdetail{
+    border-radius: 2px;
+    border:1px solid #ccc;
+    display: none;
+    padding-top: 1rem;
+}
+
+.coprodinf{
+    margin-left: 5rem;
+}
+

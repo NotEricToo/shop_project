@@ -15,25 +15,27 @@
     <div class="paoduct-title-panel">
         <h2 class="checkout-h2"><span class="am-badge am-round am-badge-warning "></span> 收货地址</h2>
 
-        <form class="am-form am-form-inline">
+        <form class="am-form am-form-inline" method="post" id="addressform" action="/addressdetail/">
+        {% csrf_token %}
         <div class="am-form-group">
-            <input type="textarea" class="am-form-field am-radius" placeholder="地址命名，如：家里/公司">
+            <input type="textarea" class="am-form-field am-radius" id="adsname" name="adsname" placeholder="地址命名，如：家里/公司" value="{{ address.addressname }}">
         </div>
-        <hr data-am-widget="divider" style="" class="am-divider-default am-margin-bottom-sm"/>
+        <p class="validaddress" id="addressnamenull"><span>地址命名不能为空</span></p>
         <div class="am-form-group">
-            <input type="textarea" class="am-form-field am-radius" placeholder="详细地址">
+            <input type="textarea" class="am-form-field am-radius" id="adsdetail" name="adsdetail" placeholder="详细地址" value="{{ address.address }}">
         </div>
-        <hr data-am-widget="divider" style="" class="am-divider-default am-margin-bottom-sm"/>
-
+        <p class="validaddress" id="addressnull"><span>地址不能为空</span></p>
         <div class="am-form-group am-form-icon">
             <i class="am-icon-user"></i>
-            <input type="text" class="am-form-field am-radius" placeholder="收货姓名">
+            <input type="text" class="am-form-field am-radius" id="adsrecname" name="adsrecname" placeholder="收货姓名" value="{{ address.receive_name }}">
         </div>
+        <p class="validaddress" id="receivenamenull"><span>收货人姓名不能为空</span></p>
         <div class="am-form-group am-form-icon">
             <i class="am-icon-phone"></i>
-            <input type="text" class="am-form-field am-radius" placeholder="手机号码">
+            <input type="text" class="am-form-field am-radius" placeholder="手机号码" id="adsmphone" name="adsmphone" value="{{ address.receive_phone }}">
         </div>
-
+        <input type="hidden" id="addressid" name="addressid" value="{{ address.id }}">
+        <p class="validaddress" id="phonenull"><span>手机号码命名不能为空</span></p>
         <p class="am-text-center"><a id="confirmbtn" class="am-btn am-btn-danger am-radius am-btn-block">确定</a></p>
         </form>
     </div>
