@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.shortcuts import render,HttpResponse,redirect,render_to_response
 from django.http import JsonResponse
-from shop.models import Recommend,Product,Category,User,Cart,UserAddress
+from shop.models import Recommend,Product,Category,User,Cart,UserAddress,Order
 from django.contrib.auth.hashers import make_password
 import uuid,os
 from django.contrib.auth.hashers import check_password
@@ -68,7 +68,6 @@ def get_cg_prod_list(request):
     sub          = request.GET.get("sub_id",None)
     searchText   = request.GET.get("searchText", None)
     type         = request.GET.get("type",0)
-    print("==",type,"===",searchText)
     try:
         if type == "0":
             prodlist = Product.objects.filter(prod_cg__id=sub)
@@ -115,7 +114,8 @@ def mine(request):
     token = request.session.get("token")
     try:
         user = User.objects.get( token = token )
-
+        cartlist = user.cart_set.filter(is_delete=False)
+        orderlist = user.order_set.filter(is_delete=False)
     except User.DoesNotExist as e:
         return loginpage(request)
     return render(request, "shop/user.html", locals())
@@ -380,3 +380,30 @@ def updatecoaddress(request):
         return render(request,"shop/function/checkout-address.html",locals())
     except UserAddress.DoesNotExist :
         pass
+
+# 提交订单
+def commitorder(request):
+
+    token=request.session.get("token")
+    dict={}
+    try:
+        user = User.objects.get(token=token)
+        try:
+            cartlist = Cart.objects.filter(user=user,is_delete=False)
+            # 此处应该添加支付成功接口
+
+            # === 先忽略
+            adsid = request.GET.get("adsid")
+            address = UserAddress.objects.get(id=adsid)
+            paytype = request.GET.get("paytype")
+            ispay = True
+            order = Order(user=user,address=address,pay_type=paytype,is_pay=ispay)
+            order.save()
+            cartlist.update(is_delete=True,order=order)
+
+            dict["status"] = "success"
+        except Exception as e :
+            dict["status"] = "error"
+    except User.DoesNotExist:
+        dict["status"] = "nologin"
+    return JsonResponse(dict)

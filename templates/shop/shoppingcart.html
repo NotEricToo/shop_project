@@ -47,6 +47,7 @@
         </div>
     </div>
     <div class="cart_foot">共选中<span class="red2 bold" id="total_good">{{ cartlist.count }}</span>种商品；总价：<span class="red2 bold" id="total_amount">{{ totalprice|floatformat:-2 }}</span>元</div>
+    {% if cartlist.count > 0  %}
     <div class="cart-tool">
 {#    	<a class="am-btn am-btn-sm am-btn-success" href="#">#}
 {#          <i class="am-icon-chevron-left"></i>#}
@@ -57,6 +58,7 @@
           结账
         </a>
     </div>
+    {% endif %}
     {# include 添加减少按钮对应的js #}
     {% include "shop/function/categorylist_js.html" %}
 

@@ -38,4 +38,6 @@ urlpatterns = [
     path('updateAddress/<int:adsid>/', views.updateAddress,name="updateAddress"), # 更新地址
     path('deleteAddress/', views.deleteAddress,name="deleteAddress"), # 删除地址
     path('updatecoaddress/', views.updatecoaddress,name="updatecoaddress"), #  更新checkout的地址
+    path('commitorder/', views.commitorder,name="commitorder"), #  提交订单
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

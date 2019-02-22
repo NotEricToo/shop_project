@@ -63,8 +63,9 @@
         <div class="paoduct-title-panel">
         	<h2 class="checkout-h2"><span class="am-badge am-round am-badge-warning ">3</span> 支付方式</h2>
             <ul class="am-list am-text-sm my-pay-ul">
-            	<li><a href="javascript:;" rel="1" class="hover"><span class="am-fr"><i class="am-icon-check-circle"></i>&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<img src="../../static/shop/default/wechat.png" class="payimg" />&nbsp;&nbsp;&nbsp;&nbsp;微信支付</a></li>
-                <li><a href="javascript:;" rel="2"><span class="am-fr"><i class="am-icon-circle-thin"></i>&nbsp;&nbsp;</span><img src="../../static/shop/default/alipay.png" class="payimg" /> 支付宝支付</a></li>
+            	<li><a href="javascript:;" rel="1" class="hover"><span class="am-fr"><i class="am-icon-check-circle"></i>&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<img src="{% static 'shop/default/wechat.png' %}" class="payimg" />&nbsp;&nbsp;&nbsp;&nbsp;微信支付</a></li>
+                <li><a href="javascript:;" rel="2"><span class="am-fr"><i class="am-icon-circle-thin"></i>&nbsp;&nbsp;</span><img src="{% static 'shop/default/alipay.png' %}" class="payimg" /> 支付宝支付</a></li>
+                <input type="hidden" id="paytype" value="1"/>
             </ul>
 
             {# javascript #}
@@ -73,7 +74,7 @@
 			</script>
             <div>
             	<ul class="am-avg-sm-2 am-text-center">
-                	<li class="am-text-center am-padding-sm"><button type="button" class="am-btn am-btn-danger am-btn-block am-radius">提交订单</button></li>
+                	<li class="am-text-center am-padding-sm"><button type="button" class="am-btn am-btn-danger am-btn-block am-radius" id="commitorder">提交订单</button></li>
                     <li class="am-text-center am-padding-sm"><button type="button" class="am-btn am-btn-success am-btn-block am-radius" id="recartpage">继续购物</button></li>
                 </ul>
             </div>

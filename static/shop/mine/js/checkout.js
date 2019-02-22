@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var coadsid = document.getElementById("coadsid") // 地址详情框
-
+    var commitorder = document.getElementById("commitorder") // 提交订单
 
     $(".my-pay-ul li > a").click(function(){
         $(".my-pay-ul li > a").removeClass('hover');
@@ -38,7 +38,37 @@ $(document).ready(function () {
     recartpage.addEventListener("click",function () {
         window.location.href="/cart/"
     })
+    
+    commitorder.addEventListener("click",function () {
+        if(
+            confirm("提交订单")
+            &&validate_address()
+        ){
 
+            var adsid = adsselectid.value
+            // 添加数据
+            var papytype = $("#paytype").val()
+            var dict={
+                "adsid":adsid,
+                "paytype":papytype
+            }
+
+            $.get("/commitorder/",dict,function (data) {
+                if(data.status == "success"){
+                    alert("提交订单成功。。")
+                    window.location.href = "/mine/"
+                }
+
+                if(data.status == "nologin"){
+                    window.location.href = "/login/"
+                }
+
+            })
+            // alert(papytype)
+            // To order list page
+            // window.location.href=""
+        }
+    })
 
 
 })

@@ -199,12 +199,13 @@ id
 user
 create_date
 address
-pay_type -- 1 支付宝 2 微信
+pay_type -- 1 微信 2  支付宝 
 is_pay  
 is_delete
 '''
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
+    # orderid = models.CharField(max_length=20,null=False,blank=False,verbose_name="订单号",unique=True)
     user = models.ForeignKey(User,on_delete=False,verbose_name="用户")
     create_date = models.DateField(default=datetime.datetime.now)
     address = models.ForeignKey(UserAddress,on_delete=False,verbose_name="收货信息")
