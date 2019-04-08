@@ -1,0 +1,33 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <script src="{% static "shop/mine/js/mine.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/mine.css" %}" />
+    <script src="{% static "shop/mine/js/myorder.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/myorder.css" %}" />
+{% endblock css_js_section %}
+
+{% block top-left-icon %}
+   {% include "shop/function/return_back.html" %}
+{% endblock %}
+
+{% block base_content %}
+
+
+    {% include "shop/function/userinfo.html" %}
+
+    <div class="my-nav-bar">
+    	<ol class="am-breadcrumb">
+          <li><a>我的订单列表</a></li>
+        </ol>
+    </div>
+    <input type="hidden" id="getorderdt">
+    <div class="am-cf cart-panel orderdetailinfo" id="orderlistpage">
+        {% include "shop/function/orderlistpage.html" %}
+    </div>
+
+
+
+
+
+{% endblock base_content %}

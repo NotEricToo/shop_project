@@ -23,8 +23,8 @@
     	<div class="cart-list-panel">
             <ul class="am-avg-sm-1 cart-panel-ul">
                 {% for cart in cartlist %}
-                <li id="cartlist{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}" class="cartlistli">
-                	<div class="imgpanel"><a href="#"><img src="{{ cart.product.prod_img.url }}" class="am-img-responsive" /></a></div>
+                <li id="cartlist{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}" class="cartlistli" >
+                	<div class="imgpanel"><a href="/productdetail/{{ cart.product.prod_id }}"><img src="{{ cart.product.prod_img.url }}" class="am-img-responsive" /></a></div>
                 	<div class="infopanel ">
                         <ul>
                             <li><h3><a href="#">{{ cart.product.prod_name }}</a></h3></li>
@@ -36,7 +36,7 @@
                                      <button type="button" class="am-btn am-btn-default cg-list-icon getgaidbysub" style="float:left"  id="cgsubbtn{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}"  ><i class="am-icon-minus"></i></button>
                                      <span class="cg-list-icon pnum-color" id="cgnumbtn{{ cart.product.prod_id }}" >{% if cart.prod_num %}{{ cart.prod_num }}{% else %} 0 {% endif %}</span>
                                      <button type="button" class="am-btn am-btn-default cg-list-icon getgaidbyadd" style="float:left" id="cgaddbtn{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}"  ><i class="am-icon-plus"></i></button>
-                                     <span class="am-fr" id="delprodbtn{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}" ><a class="am-badge am-badge-danger am-round">删除</a></span>
+                                     <span class="am-fr" id="delprodbtn{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}" cid="{{ cart.id }}" ><a class="am-badge am-badge-danger am-round">删除</a></span>
                                 </div>
                             </li>
                         </ul>

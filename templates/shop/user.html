@@ -18,11 +18,11 @@
     
     <div class="am-cf uchome-apps">
     	<ul class="am-avg-sm-3 uchome-apps-ul">
-        	<li><a href="#"><p class="imgp"><img src="{% static 'shop/default/uhomeapp1.png '%}" class="am-img-responsive" /></p><p class="namep">我的订单</p><p class="lastp">{{ orderlist.count }}笔</p></a></li>
+        	<li><a href="/orderlist"><p class="imgp"><img src="{% static 'shop/default/uhomeapp1.png' %}" class="am-img-responsive" /></p><p class="namep">我的订单</p><p class="lastp">{{ orderlist.count }}笔</p></a></li>
             <li><a href="/cart/"><p class="imgp"><img src="{% static 'shop/default/uhomeapp4.png' %}" class="am-img-responsive" /></p><p class="namep">购物车</p><p class="lastp">{{ cartlist.count }}件</p></a></li>
-            <li><a href="#"><p class="imgp"><img src="{% static 'shop/default/uhomeapp7.png' %}" class="am-img-responsive" /></p><p class="namep">收藏商品</p><p class="lastp">0件</p></a></li>
+            <li><a href="/prod_collect/{{ user.id }}"><p class="imgp"><img src="{% static 'shop/default/uhomeapp7.png' %}" class="am-img-responsive" /></p><p class="namep">收藏商品</p><p class="lastp">{{ user.prod_collect_set.count }}件</p></a></li>
             <li><a href="/addresslist/"><p class="imgp"><img src="{% static 'shop/default/uhomeapp11.png' %}" class="am-img-responsive" /></p><p class="namep">收货地址</p><p class="lastp">{{ user.useraddress_set.count }}条</p></a></li>
-            <li><a href="#"><p class="imgp"><img src="{% static 'shop/default/uhomeapp12.png' %}" class="am-img-responsive" /></p><p class="namep">我的消息</p><p class="lastp">0条</p></a></li>
+{#            <li><a href="#"><p class="imgp"><img src="{% static 'shop/default/uhomeapp12.png' %}" class="am-img-responsive" /></p><p class="namep">我的消息</p><p class="lastp">0条</p></a></li>#}
         </ul>
     	
     </div>

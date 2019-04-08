@@ -1,0 +1,18 @@
+.order-list-panel-hide {
+    display: none;
+
+}
+
+.order-list-panel-block {
+    display: block;
+
+}
+
+
+.my-nav-bar{
+    margin-top: 0.5rem;
+}
+
+.orderinfo{
+    font-size: smaller;
+}

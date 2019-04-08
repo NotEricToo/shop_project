@@ -1,0 +1,45 @@
+<ul class="am-avg-sm-1 cart-panel-ul">
+
+    <div class="orderinfo">
+        <div class="my-nav-bar">
+            <ol class="am-breadcrumb">
+                <li>订单信息</li>
+            </ol>
+        </div>
+    	<ul class="">
+          <li><span>订单地址:{{ order.address.addressname }}</span></li>
+          <li>
+              <span>支付方式:
+                {% if order.pay_type == "1" %}
+                    微信
+                {% endif %}
+                {% if order.pay_type == "2" %}
+                    支付宝
+                {% endif %}
+              </span>
+          </li>
+          <li><span>总价: {{ order.order_price }}</span> </li>
+
+        </ul>
+    </div>
+    <div class="my-nav-bar">
+    	<ol class="am-breadcrumb">
+          <li><a>商品列表</a></li>
+        </ol>
+    </div>
+    {% for cart in cartlist %}
+        <li id="cartlist{{ cart.product.prod_id }}" ga="{{ cart.product.prod_id }}" class="cartlistli">
+
+                <div class="imgpanel"><a href="#"><img src="{{ cart.product.prod_img.url }}" class="am-img-responsive" /></a></div>
+                <div class="infopanel ">
+                    <ul>
+                        <li><h3><a href="#">{{ cart.product.prod_name }}</a></h3></li>
+                        <li><p>品牌：{{ cart.product.prod_brand }}</p></li>
+                        <li><p>价格：<span class="red2 bold">{{ cart.product.prod_price }}</span> 元  </p></li>
+                        <li><p>数量：<span class="red2" >{{ cart.prod_num }}</span></p></li>
+                    </ul>
+                </div>
+
+        </li>
+    {% endfor %}
+</ul>

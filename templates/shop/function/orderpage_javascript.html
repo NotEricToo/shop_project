@@ -1,0 +1,78 @@
+
+<script type="text/javascript">
+
+    function prepage_click() {
+        var nowpagedom = document.getElementById("orderpagenum") // 当前页数 DOM
+        var nowpagenum = nowpagedom.innerText // 当前页数
+
+        var orderlistpage = document.getElementById("orderlistpage") // 列表的div DOM
+
+        if(nowpagenum <= 1 ){
+            return false
+        }
+        // indicator == 1 表示下一页
+        $.get("/orderpage/"+nowpagenum+"/1/",function (data) {
+            orderlistpage.innerHTML = data
+        })
+
+
+    }
+
+    function nextpage_click() {
+
+        var nowpagedom = document.getElementById("orderpagenum") // 当前页数 DOM
+        var totalpagedom = document.getElementById("orderpagetotalnum") // 总页数 DOM
+
+        var nowpagenum = nowpagedom.innerText // 当前页数
+        var totalpagenum = totalpagedom.getAttribute("ga") // 总页数
+
+
+        var orderlistpage = document.getElementById("orderlistpage") // 列表的div DOM
+
+        if(nowpagenum>=totalpagenum){
+            return false
+        }
+
+        // indicator == 2 表示下一页
+        $.get("/orderpage/"+nowpagenum+"/2/",function(data) {
+            orderlistpage.innerHTML = data
+
+        })
+    }
+
+    function orderdetail(gav) {
+        var oddetail = document.getElementsByClassName("order-list-panel") // order detail
+
+        var getorderdt = document.getElementById("getorderdt")
+
+        {#var gav = this.getAttribute("ga")#}
+            // alert(gav)
+            // =============
+        for(var j = 0;j< oddetail.length;j++){
+            var odt = oddetail[j]
+            odt.classList.remove("order-list-panel-block")
+
+        }
+        // ============= 隐藏所有detail
+
+        var orderdt = document.getElementById("orderdetail" + gav) // 获取 detail 的 ID
+
+
+        // ============== ajax get the selected order detail
+        $.get("/orderlistdetail/"+gav,function (data) {
+            orderdt.innerHTML = data
+        })
+
+        // =================================================
+
+        if(gav == getorderdt.value){
+            odt.classList.remove("order-list-panel-block")
+            getorderdt.value = null
+        }else{
+            orderdt.classList.add("order-list-panel-block")
+            getorderdt.value = gav
+        }
+    }
+
+
+</script>

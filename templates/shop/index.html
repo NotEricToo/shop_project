@@ -57,8 +57,8 @@
         </div>
         <div class="my-shop-nav-panelrt am-fr">
         	<ul class="am-nav am-nav-pills my-shop-nav-ul">
-            	<li><a href="http://www.baidu.com">关于我们</a></li>
-                <li><a href="#">新闻中心</a></li>
+            	<li><a>Welcome To This Shop!</a></li>
+{#                <li><a href="#">新闻中心</a></li>#}
             </ul>
         </div>
     </div>
@@ -88,8 +88,10 @@
                                 <div class="am-panel am-panel-default homepage-prod">
 
                                     <div class="am-panel-bd">
-                                        <img class="am-img-responsive" src="{{ p.prod_img.url }}" />
-                                        <h3><a href="#">{{ p.prod_name }}</a></h3>
+                                        <a href="/productdetail/{{ p.prod_id }}">
+                                            <img class="am-img-responsive" src="{{ p.prod_img.url }}" />
+                                            <h3><a href="#">{{ p.prod_name }}</a></h3>
+                                        </a>
                                     </div>
 
                                 </div>

@@ -38,23 +38,24 @@ aside{
     font-size:xx-small;
     /*display:flex;*/
     border:solid 1px #ededed;
+
+
 }
 
 .prod-list-cg-div{
     display:flex;
     border-bottom:solid 1px #ededed;
     margin-top: 0rem;
-    height:13rem;
-    /*height:10rem;*/
+    height:11rem;
 }
 
 .cg-list-img{
-    height:12rem;
-    width:14rem;
+    height:10rem;
+    width:10rem;
 }
 
 .infopanel{
-    width: 10rem;
+    width: 12rem;
 }
 
 .cg-list-icon{
@@ -78,13 +79,13 @@ aside{
 }
 
 .imgpanel{
-    height: 10rem;
-    width:15rem;
+    /*height: 20rem;*/
+    /*width:12rem;*/
 }
 
 .prod-list-cg-li{
-    width: 23rem;
-    height: 18rem;
+    /*width: 23rem;*/
+    /*height: 18rem;*/
 }
 
 .ProdNotFound{

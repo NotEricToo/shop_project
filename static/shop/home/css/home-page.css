@@ -9,11 +9,11 @@
 }
 
 .am-panel-bd{
-    width: 17rem;
+    /*width: 15rem;*/
     height: 18rem;
     float:left;
 }
 .am-img-responsive{
-    width: 16rem;
+    width: 14rem;
     height: 12rem;
 }

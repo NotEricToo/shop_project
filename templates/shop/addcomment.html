@@ -1,0 +1,37 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+{#   #}
+    <script src="{% static "shop/mine/js/addcomment.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/addcomment.css" %}" />
+{% endblock css_js_section %}
+
+{% block top-left-icon %}
+   {% include "shop/function/return_back.html" %}
+{% endblock %}
+
+{% block base_content %}
+
+	<div class="gray-panel">
+    	<div class="paoduct-title-panel">
+            <form action="{% url 'commitcomment' %}" method="get" id="commentform">
+                <h2 class="checkout-h2"><i class="am-icon-lightbulb-o am-text-danger"></i> 请填写{{ prod.prod_name }}的评价信息！</h2>
+                <div class="cart-list-panel" id="inputpanel">
+
+                        <input type="text" placeholder="填写评论.." id="content" name="content">
+                        <input type="hidden" id="prod_id" name="prod_id" value="{{ prod.prod_id }}" >
+                        <input type="hidden" name="httpreferer" id="httpreferer" value="{{ httpreferer }}">
+
+                </div>
+                <div>
+                    <ul class="am-avg-sm-2 am-text-center">
+                        <li class="am-text-center am-padding-sm"><button type="button"  id="commitcomment" class="am-btn am-btn-danger am-btn-block am-radius am-btn-sm">确定</button></li>
+                        <li class="am-text-center am-padding-sm"><button type="button" id="canclecomment" class="am-btn am-btn-success am-btn-block am-radius am-btn-sm">离开</button></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+    
+{% endblock base_content %}

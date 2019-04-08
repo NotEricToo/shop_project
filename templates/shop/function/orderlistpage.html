@@ -1,0 +1,32 @@
+{% for order in orderlist %}
+    <div class="my-nav-bar" id="clorderpanel{{ order.id }}" ga="{{ order.id }}" onclick="orderdetail({{ order.id }})">
+        <a>
+            <ol class="am-breadcrumb">
+              <li>订单号： {{ order.id }}</li>
+              <li>时间： {{ order.create_date | date:"Y-m-d" }} </li>
+{#                      <li>地址： {{ order.address.addressname }} </li>#}
+            </ol>
+        </a>
+    </div>
+    <div class="order-list-panel order-list-panel-hide" id="orderdetail{{ order.id }}" ga="{{ order.id }}">
+        {% include  "shop/function/orderlistdetail.html" %}
+    </div>
+{% endfor %}
+
+{# 分页的 panel   #}
+<div class="cart-tool">
+    <a class="am-btn am-btn-sm am-btn-success" id="orderpreviouspage" onclick="prepage_click()">
+      <i class="am-icon-chevron-left"></i>
+      上一页
+    </a>
+    <span class="orderlistpage" id="orderpagenum" ga="{{ nowpage }}">{{ nowpage }}</span>
+        /
+    <span id="orderpagetotalnum" ga="{{ totalpage }}">{{ totalpage }}</span>
+    <a class="am-btn am-btn-sm am-btn-success"  id="ordernextpage" onclick="nextpage_click()">
+       下一页
+      <i class="am-icon-chevron-right"></i>
+    </a>
+</div>
+
+
+{% include "shop/function/orderpage_javascript.html" %}

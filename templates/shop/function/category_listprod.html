@@ -6,16 +6,16 @@
 
         <div class=" prod-list-cg-div" >
 
-            <div class="imgpanel getgaidbyimg" id="clickcgimg{{ prod.prod_id }}" ga="{{ prod.prod_id }}" ><a><img src="{{ prod.prod_img.url }}" class="am-img-responsive cg-list-img" /></a></div>
+            <div class="imgpanel getgaidbyimg" id="clickcgimg{{ prod.prod_id }}" ga="{{ prod.prod_id }}" ><a href="/productdetail/{{ prod.prod_id }}"><img src="{{ prod.prod_img.url }}" class="am-img-responsive cg-list-img" /></a></div>
 
-                <div class="infopanel" >
-                     <ul>
-                        <li><a href="#">{{ prod.prod_name }}</a></li>
-                         <li><span>{{ prod.prod_brand }}</span></li>
-                        <li>价格：<span class="red2 bold">{{ prod.prod_price }}</span> 元</li>
-                        {% include "shop/function/addAndSubBtn.html" %}
-                     </ul>
-                </div>
+            <div class="infopanel" >
+                 <ul>
+                    <li><a href="#">{{ prod.prod_name }}</a></li>
+                     <li><span>{{ prod.prod_brand }}</span></li>
+                    <li>价格：<span class="red2 bold">{{ prod.prod_price }}</span> 元</li>
+                    {% include "shop/function/addAndSubBtn.html" %}
+                 </ul>
+            </div>
 
         </div>
 

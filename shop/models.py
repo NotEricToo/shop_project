@@ -105,7 +105,7 @@ class User(models.Model):
     chinese_name=models.CharField(max_length=50,null=True,blank=True,verbose_name="中文名字")
     phone_num = models.CharField(max_length=20,null=False,blank=False,verbose_name="电话号码")
     desc = models.TextField(max_length=200,null=True,blank=True,verbose_name="个人描述")
-    user_img = models.ImageField(upload_to="%Y/%m/%d",default="userimg/blank.png",max_length=200)
+    user_img = models.ImageField(upload_to=upload_to,default="userimg/blank.png",max_length=200)
     class Meta:
         db_table="tbl_user"
         verbose_name_plural="个人用户表"
@@ -145,11 +145,11 @@ class Product(models.Model):
     prod_id = models.AutoField(primary_key=True)
     prod_name = models.CharField(max_length=20,null=False,blank=False,verbose_name="商品名字")
     prod_longname = models.TextField(max_length=100,null=False,blank=False,verbose_name="商品长名字")
-    prod_img = models.ImageField(upload_to="%Y/%m/%d",verbose_name="商品图片")
-    prod_rollimg1 = models.ImageField(upload_to="%Y/%m/%d",blank=True,null=True,verbose_name="商品轮播图")
-    prod_rollimg2 = models.ImageField(upload_to="%Y/%m/%d",blank=True,null=True,verbose_name="商品轮播图2")
-    prod_rollimg3 = models.ImageField(upload_to="%Y/%m/%d",blank=True,null=True,verbose_name="商品轮播图3")
-    prod_rollimg4 = models.ImageField(upload_to="%Y/%m/%d",blank=True,null=True,verbose_name="商品轮播图4")
+    prod_img = models.ImageField(upload_to=upload_to,verbose_name="商品图片")
+    prod_rollimg1 = models.ImageField(upload_to=upload_to,blank=True,null=True,verbose_name="商品轮播图")
+    prod_rollimg2 = models.ImageField(upload_to=upload_to,blank=True,null=True,verbose_name="商品轮播图2")
+    prod_rollimg3 = models.ImageField(upload_to=upload_to,blank=True,null=True,verbose_name="商品轮播图3")
+    prod_rollimg4 = models.ImageField(upload_to=upload_to,blank=True,null=True,verbose_name="商品轮播图4")
     prod_desc = models.TextField(max_length=200,null=True,blank=True,verbose_name="商品描述")
     prod_price = models.FloatField(null=False,blank=False,verbose_name="单价")
     prod_num = models.IntegerField(default=0,verbose_name="库存")
@@ -211,6 +211,7 @@ class Order(models.Model):
     address = models.ForeignKey(UserAddress,on_delete=False,verbose_name="收货信息")
     pay_type = models.CharField(max_length=20,null=True,blank=True,verbose_name="支付方式")
     is_pay = models.BooleanField(default=False,verbose_name="是否已支付")
+    order_price = models.FloatField(default=0,verbose_name="订单总价")
     is_delete = models.BooleanField(default=False,verbose_name="已删除")
     class Meta:
         db_table="tbl_order"
@@ -270,7 +271,7 @@ class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product,on_delete=False,verbose_name="评论商品")
     user = models.ForeignKey(User,on_delete=False,verbose_name="评论用户")
-    create_date = models.DateTimeField(default=datetime.datetime.now)
+    create_date = models.DateTimeField(default=datetime.datetime.now,verbose_name="评论时间")
     content = models.TextField(max_length=200,null=False,blank=False,verbose_name="评论内容")
     class Meta:
         db_table="tbl_comment"

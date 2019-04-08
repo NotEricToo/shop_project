@@ -1,0 +1,57 @@
+<script type="text/javascript">
+function checkIsInteger(str)
+{
+  //如果为空，则通过校验
+  {#alert("value is : " + str)#}
+  if(str == "")
+    return true;
+     {#if(/^(\-?)(\d+)$/.test(str))#}
+     {#  return true;#}
+     {#else#}
+     {#  return false;#}
+    var r = /^\+?[1-9][0-9]*$/;
+    if(r.test(str)){
+        return true
+    }else{
+        return false
+    }
+
+
+}
+var errordialog=function(c){
+	alert(c)
+}
+//检验商品数量
+function checkCounts(id) {
+    var Counts = $("#" + id).val();
+    if (Counts == "") {
+        errordialog("请填写数量!");
+        return false;
+    }
+    else if (!checkIsInteger(Counts)) {
+        errordialog("商品数量不是整数!");
+        return false;
+    }
+    else if (Counts < 1) {
+        errordialog("商品数量不能小于1!");
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+function addQty(){
+	checkCounts('prod_num');
+	var qty = parseInt($('#prod_num').val());
+	$('#prod_num').val(qty+1);
+}
+function subtractQty(){
+	checkCounts('prod_num');
+	var qty = parseInt($('#prod_num').val());
+	if(qty <=1){
+		errordialog("商品数量不能小于1");
+		return;
+	}
+	$('#prod_num').val(qty-1);
+}
+</script>

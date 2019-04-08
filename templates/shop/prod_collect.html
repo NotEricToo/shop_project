@@ -1,0 +1,65 @@
+{% extends "shop/base_page.html" %}
+{% load staticfiles %}
+{% block css_js_section %}
+    <script src="{% static "shop/mine/js/mine.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/mine.css" %}" />
+    <script src="{% static "shop/mine/js/collect.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "shop/mine/css/collect.css" %}" />
+{% endblock css_js_section %}
+
+{% block top-left-icon %}
+   {% include "shop/function/return_back.html" %}
+{% endblock %}
+
+{% block base_content %}
+    {% include "shop/function/userinfo.html" %}
+
+    <div class="my-nav-bar">
+    	<ol class="am-breadcrumb">
+          <li><a>我的商品收藏</a></li>
+        </ol>
+    </div>
+    <div class="am-cf cart-panel">
+    	<div class="cart-list-panel">
+            <ul class="am-avg-sm-1 cart-panel-ul">
+                {% for collect in collectlist %}
+                <li id="cltlist{{ collect.product.prod_id }}" ga="{{ collect.product.prod_id }}" class="cartlistli" >
+                	<div class="imgpanel"><a href="/productdetail/{{ collect.product.prod_id }}"><img src="{{ collect.product.prod_img.url }}" class="am-img-responsive" /></a></div>
+                	<div class="infopanel ">
+                        <ul>
+                            <li><h3><a href="#">{{ collect.product.prod_name }}</a></h3></li>
+                            <li><p>品牌：{{ collect.product.prod_brand }}</p></li>
+                            <li><p>价格：<span class="red2 bold">{{ collect.product.prod_price }}</span> 元  </p></li>
+                            <li class="btnlicls">
+                                <span class="am-fr" id="delprodbtn{{ collect.product.prod_id }}" ga="{{ collect.product.prod_id }}"  ><a onclick="javascript:delcollect({{ collect.product.prod_id }})" class="am-badge am-badge-danger am-round">删除</a></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+    function delcollect(prodid) {
+        if(confirm("确认删除该产品？")){
+
+
+            var delprod = document.getElementById("cltlist"+prodid) // 获取 btn
+            $.get("/del_collect/",{"prod_id":prodid},function (data) {
+                if(data.status=="nologin"){
+                    window.location.href=  "/login/"
+                }
+                if(data.status == "success"){
+                    delprod.parentNode.removeChild(delprod)
+
+                }
+            })
+        }
+
+    }
+    </script>
+
+
+{% endblock base_content %}

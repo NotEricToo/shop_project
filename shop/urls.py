@@ -39,5 +39,15 @@ urlpatterns = [
     path('deleteAddress/', views.deleteAddress,name="deleteAddress"), # 删除地址
     path('updatecoaddress/', views.updatecoaddress,name="updatecoaddress"), #  更新checkout的地址
     path('commitorder/', views.commitorder,name="commitorder"), #  提交订单
+    path('orderlist/', views.orderlistpage,name="orderlist"), #  订单列表页面
+    path('orderlistdetail/<int:orderid>', views.orderlistdetail,name="orderlistdetail"), #  点击订单获取订单详情
+    path('orderpage/<int:nowpage>/<int:indicator>/', views.orderlist_getpage,name="orderpage"), #  点击订单获取订单详情
+    path('productdetail/<int:prod_id>', views.product_detail,name="productdetail"), #  产品详情页面
+    path('addcomment/<int:prod_id>', views.comment_page,name="addcomment"), #  添加产品的 comment页面
+    path('commitcomment/', views.commit_comment,name="commitcomment"), #  添加产品的 comment页面
+    path('collectproduct/', views.collectproduct,name="collectproduct"), #  添加产品的 comment页面
+    path('addtocart/', views.addtocart_prodpage,name="addtocart"), #  商品详情页-添加购物车
+    path('prod_collect/<int:userid>', views.my_collect,name="prod_collect"), #  我的收藏页面
+    path('del_collect/', views.del_collect,name="del_collect"), #  删除我的收藏
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

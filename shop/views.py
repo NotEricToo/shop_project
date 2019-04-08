@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.shortcuts import render,HttpResponse,redirect,render_to_response
 from django.http import JsonResponse
-from shop.models import Recommend,Product,Category,User,Cart,UserAddress,Order
+from shop.models import Recommend,Product,Category,User,Cart,UserAddress,Order,Comment,Prod_collect
 from django.contrib.auth.hashers import make_password
 import uuid,os
 from django.contrib.auth.hashers import check_password
@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from django.conf import settings
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from shop.mypaginator import MyPaginator
 import json
 # Create your views here.
 
@@ -116,6 +117,7 @@ def mine(request):
         user = User.objects.get( token = token )
         cartlist = user.cart_set.filter(is_delete=False)
         orderlist = user.order_set.filter(is_delete=False)
+
     except User.DoesNotExist as e:
         return loginpage(request)
     return render(request, "shop/user.html", locals())
@@ -199,6 +201,7 @@ def updateToCart(request,act):
     # 获取产品id
     prodid = request.GET.get("prodid")
     prod = Product.objects.get(prod_id = prodid)
+    cid = request.GET.get("cid")
     sumprice = 0
     # 根据 token， 判断用户是否已经登陆
     # 已登录，获取用户
@@ -240,16 +243,20 @@ def updateToCart(request,act):
                     cart.delete()
             except Cart.DoesNotExist as e :
                 #不在购物车， 直接添加一条新的记录
-                if act == 1:
-                    # 1 添加
-                    # 该用户购物车没有该产品，新增
-                    cart = Cart(user = user, product = prod)
-                    cart.save()
-                    dict["status"] = "success"
-                    dict["num"] = cart.prod_num
-                elif act == 0 :
-                    # 0 为减少
-                    dict["status"] = "error"
+                if prod.prod_num > 0 :
+                    if act == 1:
+                        # 1 添加
+                        # 该用户购物车没有该产品，新增
+                        cart = Cart(user = user, product = prod)
+                        cart.save()
+                        dict["status"] = "success"
+                        dict["num"] = cart.prod_num
+                    elif act == 0 :
+                        # 0 为减少
+                        dict["status"] = "error"
+                else:
+                    # maxnum 表示已经超过最大库存
+                    dict["status"] = "maxnum"
             finally:
                 # 最后，获取该用户现有的购物车所有个数和总价
                 cartlist = Cart.objects.filter(user=user, is_delete=False)
@@ -275,12 +282,14 @@ def addAddress(request):
     token = request.session.get("token")
     try:
         user = User.objects.get(token=token)
+        refer_http = request.META.get("HTTP_REFERER")
         if request.method == "POST" :
             addressid = request.POST.get("addressid")
             adsname = request.POST.get("adsname")
             adsdetail = request.POST.get("adsdetail")
             adsrecname = request.POST.get("adsrecname")
             adsmphone = request.POST.get("adsmphone")
+            referhttp = request.POST.get("referhttp")
             try:
                 # 如果存在该 address ， 就更新
                 useraddress = UserAddress.objects.get(id=addressid)
@@ -298,7 +307,7 @@ def addAddress(request):
                                       address=adsdetail)
                 address.save()
             finally:
-                return redirect(reverse("addresslist"))
+                return redirect(referhttp)
     except User.DoesNotExist as e:
         return render(request,"shop/login.html",{"title":"请登陆"})
     return render(request,"shop/addressInfoDetail.html",locals())
@@ -351,6 +360,7 @@ def updateAddress(request,adsid):
     token = request.session.get("token")
     try:
         user = User.objects.get(token=token)
+        refer_http = request.META.get("HTTP_REFERER")
         try:
             address = UserAddress.objects.get(id=adsid)
             return render(request,"shop/addressInfoDetail.html",locals())
@@ -396,14 +406,222 @@ def commitorder(request):
             adsid = request.GET.get("adsid")
             address = UserAddress.objects.get(id=adsid)
             paytype = request.GET.get("paytype")
+            total_price = request.GET.get("total_price")
             ispay = True
-            order = Order(user=user,address=address,pay_type=paytype,is_pay=ispay)
+            order = Order(user=user,address=address,pay_type=paytype,is_pay=ispay,order_price=total_price)
             order.save()
             cartlist.update(is_delete=True,order=order)
+            for i in order.cart_set.all():
+                # print(i.product.prod_id,i.product.prod_sales,i.prod_num)
+                p = Product.objects.get(prod_id=i.product.prod_id)
+                p.prod_sales =  p.prod_sales + i.prod_num
+                p.prod_num = p.prod_num - i.prod_num
+                p.save()
+
 
             dict["status"] = "success"
         except Exception as e :
+            print(e)
             dict["status"] = "error"
     except User.DoesNotExist:
+        dict["status"] = "nologin"
+    return JsonResponse(dict)
+
+# 订单列表页面
+def orderlistpage(request):
+    title = "订单列表"
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
+        orderlist = Order.objects.filter(is_delete=False,user = user ).order_by("-id")
+        mp = MyPaginator(orderlist) # 5 个为一页
+        orderlist = mp.getpage(1)
+        nowpage = mp.nowpage
+        totalpage = mp.totalpage
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+    return render(request, "shop/myorderlist.html", locals())
+
+# 点击订单，获得订单详情
+def orderlistdetail(request,orderid):
+    if request.method == "GET":
+
+        try:
+            order = Order.objects.get(id = orderid)
+            cartlist = order.cart_set.all()
+            return render(request,"shop/function/orderlistdetail.html",locals())
+        except Order.DoesNotExist as e :
+            pass
+    else:
+        pass
+
+# 点击订单列表 上一页 下一页， 获取相应的页数
+def orderlist_getpage(request,nowpage,indicator):
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
+        orderlist = Order.objects.filter(is_delete=False, user=user).order_by("-id")
+        mp = MyPaginator(orderlist,nowpage=nowpage)  # 5 个为一页
+        # 1 表示 上一页
+        if indicator == 1 :
+            orderlist = mp.previous_page()
+
+        # 2 表示下一页
+        if indicator == 2 :
+            orderlist = mp.next_page()
+
+        nowpage = mp.nowpage
+        totalpage = mp.totalpage
+
+        return render(request,"shop/function/orderlistpage.html",locals())
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+
+
+#  product 详情页面：
+def product_detail(request,prod_id):
+    try:
+        product = Product.objects.get(prod_id=prod_id)
+        title=product.prod_name
+        cartlist = Cart.objects.filter(is_delete=True,product=product).order_by("-id")[:5]
+        commentlist = Comment.objects.filter(product = product)
+        # 获取用户，并判断是否已经收藏该商品
+        try:
+            user = User.objects.get(token = request.session.get("token"))
+            islogin = 1
+            try:
+                collect = Prod_collect.objects.get(user=user, product=product)
+                iscollect = 1
+            except Prod_collect.DoesNotExist as e:
+                iscollect = 0
+        except User.DoesNotExist as e:
+            islogin = 0
+            iscollect = 0
+        mp = MyPaginator(commentlist)  # 5 个为一页
+        commentlist = mp.getpage(1)
+        nowpage = mp.nowpage
+        totalpage = mp.totalpage
+        return render(request, "shop/product.html", locals())
+    except Product.DoesNotExist as e:
+        pass
+
+# comment 添加页
+def comment_page(request,prod_id):
+    prod = Product.objects.get(prod_id=prod_id)
+    title = "评价商品："
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token=token)
+        httpreferer = request.META.get("HTTP_REFERER")
+        return render(request, "shop/addcomment.html", locals())
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+
+
+# 添加 comment 转商品页面
+def commit_comment(request):
+    token = request.session.get("token")
+    try:
+        user = User.objects.get(token = token )
+        content = request.GET.get("content")
+        prod_id = request.GET.get("prod_id")
+        httpreferer = request.GET.get("httpreferer")
+        product = Product.objects.get(prod_id = prod_id)
+        comment = Comment(user = user , product = product , content= content)
+        comment.save()
+        return redirect(httpreferer)
+    except User.DoesNotExist as e:
+        pass
+
+
+# 收藏商品
+def collectproduct(request):
+
+    token = request.session.get("token")
+    prod_id = request.GET.get("prod_id")
+    product = Product.objects.get(prod_id=prod_id)
+    try:
+        user = User.objects.get(token = token)
+        try:
+            collect_list = Prod_collect.objects.filter(user=user,product=product )
+            if collect_list.count() == 0 :
+                collect = Prod_collect(user=user, product=product)
+                collect.save()
+                return render(request, "shop/function/collected_product.html", locals())
+            else :
+                collect_list.delete()
+                return render(request,"shop/function/no-collected_product.html",locals())
+
+        except Exception as e:
+            print(e)
+
+    except User.DoesNotExist as e:
+        pass
+
+# 商品详情页， 添加购物车
+def addtocart_prodpage(request):
+    token = request.session.get("token")
+    dict = {}
+    try:
+        user = User.objects.get(token = token)
+        prod_id = request.GET.get("prod_id")
+        product = Product.objects.get(prod_id=prod_id)
+
+        prod_num = int(request.GET.get("prod_num"))
+        # print(prod_num)
+        cart = Cart.objects.get(user=user,product=product,is_delete=False)
+        try:
+
+            cart.prod_num = cart.prod_num + prod_num
+            if cart.prod_num <= product.prod_num :
+                cart.save()
+            else:
+                raise Exception
+            dict["status"] = "success"
+        except Exception as e:
+            print(e)
+            dict["status"] = "error"
+    except User.DoesNotExist :
+        dict["status"] = "nologin"
+    except Cart.MultipleObjectsReturned as e:
+        dict["status"] = "error"
+    except Cart.DoesNotExist as e:
+        if prod_num<=product.prod_num:
+            cart = Cart(user=user, product=product, prod_num=prod_num)
+            cart.save()
+            dict["status"] = "success"
+        else:
+            dict["status"] = "error"
+
+    return JsonResponse(dict)
+
+# 我的收藏
+def my_collect(request,userid):
+    title = "我的收藏"
+    try:
+        user = User.objects.get(id=userid)
+        collectlist = Prod_collect.objects.filter(user=user)
+        mp = MyPaginator(collectlist)
+        collectlist = mp.getpage(1)
+        return render(request,"shop/prod_collect.html",locals())
+    except User.DoesNotExist as e:
+        return render(request, "shop/login.html", {"title": "请登陆"})
+
+
+# 删除我的收藏
+def del_collect(request):
+    prod_id = request.GET.get("prod_id")
+    product = Product.objects.get(prod_id = prod_id)
+    token = request.session.get("token")
+    dict={}
+    try:
+        user = User.objects.get(token = token)
+        try:
+            collect = Prod_collect.objects.get(user=user,product=product)
+            collect.delete()
+            dict["status"] = "success"
+        except Exception as e:
+            pass
+    except User.DoesNotExist as e:
         dict["status"] = "nologin"
     return JsonResponse(dict)
